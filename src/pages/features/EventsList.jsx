@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Navbar from '../../components/landing/Navbar';
 import events from '../../Data/events.json';
 
 const EventsList = () => {
+  const startFocus = useRef();
+
+  useEffect(() => {
+    startFocus.current.focus();
+  });
+
   return (
     <div className='flex flex-col justify-between'>
       <Navbar />
       <div className='bg-secondary min-h-screen p-6 md:p-10 mt-12'>
-        <h1 className='text-3xl font-bold text-primary mb-8 text-center md:text-left'>
+        <h1
+          className='text-3xl font-bold text-primary mb-8 text-center md:text-left'
+          ref={startFocus}
+        >
           All Events
         </h1>
 

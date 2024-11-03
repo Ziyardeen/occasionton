@@ -24,32 +24,28 @@ const Homepage = () => {
             {events
               .filter((event) => event.isFeatured)
               .map((event, index) => {
-                if (event.isFeatured) {
-                  return (
-                    <div
-                      key={index}
-                      className='bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow'
+                return (
+                  <div
+                    key={index}
+                    className='bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow'
+                  >
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className='w-full h-48 object-cover rounded-md mb-4'
+                    />
+                    <h2 className='text-xl font-semibold text-primary mb-2'>
+                      {event.title}
+                    </h2>
+                    <p className='text-gray-600 mb-4'>{event.description}</p>
+                    <Link
+                      to={`/events/${index + 1}`}
+                      className='text-primary font-semibold underline'
                     >
-                      <img
-                        src={event.image}
-                        alt={event.title}
-                        className='w-full h-48 object-cover rounded-md mb-4'
-                      />
-                      <h2 className='text-xl font-semibold text-primary mb-2'>
-                        {event.title}
-                      </h2>
-                      <p className='text-gray-600 mb-4'>{event.description}</p>
-                      <Link
-                        to={`/events/${index + 1}`}
-                        className='text-primary font-semibold underline'
-                      >
-                        Learn More
-                      </Link>
-                    </div>
-                  );
-                } else {
-                  return;
-                }
+                      Learn More
+                    </Link>
+                  </div>
+                );
               })}
           </div>
 
