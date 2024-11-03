@@ -64,7 +64,7 @@ const Header = () => {
           {isHomePage && (
             <>
               <li>
-                <Link to='#features' className='hover:underline'>
+                <Link to='/homepage' className='hover:underline'>
                   Features
                 </Link>
               </li>

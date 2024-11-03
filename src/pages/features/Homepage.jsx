@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/landing/Navbar';
+import events from '../../Data/events.json';
 
 const Homepage = () => {
+  console.log(events);
   return (
-    <div className='flex flex-col justify-between '>
+    <div className='flex flex-col justify-between'>
       <Navbar />
 
       <div className='bg-secondary min-h-screen py-12 px-6 md:px-12 mt-10'>
@@ -19,102 +21,36 @@ const Homepage = () => {
 
           {/* Highlighted Events */}
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {/* Event 1 */}
-            <div className='bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow'>
-              <h2 className='text-xl font-semibold text-primary mb-2'>
-                Event Title 1
-              </h2>
-              <p className='text-gray-600 mb-4'>
-                A brief description of the event that captures the essence and
-                highlights the purpose.
-              </p>
-              <Link
-                to='/events/1'
-                className='text-primary font-semibold underline'
-              >
-                Learn More
-              </Link>
-            </div>
-            {/* Event 2 */}
-            <div className='bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow'>
-              <h2 className='text-xl font-semibold text-primary mb-2'>
-                Event Title 2
-              </h2>
-              <p className='text-gray-600 mb-4'>
-                A brief description of the event that captures the essence and
-                highlights the purpose.
-              </p>
-              <Link
-                to='/events/2'
-                className='text-primary font-semibold underline'
-              >
-                Learn More
-              </Link>
-            </div>
-            {/* Event 3 */}
-            <div className='bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow'>
-              <h2 className='text-xl font-semibold text-primary mb-2'>
-                Event Title 3
-              </h2>
-              <p className='text-gray-600 mb-4'>
-                A brief description of the event that captures the essence and
-                highlights the purpose.
-              </p>
-              <Link
-                to='/events/3'
-                className='text-primary font-semibold underline'
-              >
-                Learn More
-              </Link>
-            </div>
-            {/* Event 4 */}
-            <div className='bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow'>
-              <h2 className='text-xl font-semibold text-primary mb-2'>
-                Event Title 4
-              </h2>
-              <p className='text-gray-600 mb-4'>
-                A brief description of the event that captures the essence and
-                highlights the purpose.
-              </p>
-              <Link
-                to='/events/4'
-                className='text-primary font-semibold underline'
-              >
-                Learn More
-              </Link>
-            </div>
-            {/* Event 5 */}
-            <div className='bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow'>
-              <h2 className='text-xl font-semibold text-primary mb-2'>
-                Event Title 5
-              </h2>
-              <p className='text-gray-600 mb-4'>
-                A brief description of the event that captures the essence and
-                highlights the purpose.
-              </p>
-              <Link
-                to='/events/5'
-                className='text-primary font-semibold underline'
-              >
-                Learn More
-              </Link>
-            </div>
-            {/* Event 6 */}
-            <div className='bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow'>
-              <h2 className='text-xl font-semibold text-primary mb-2'>
-                Event Title 6
-              </h2>
-              <p className='text-gray-600 mb-4'>
-                A brief description of the event that captures the essence and
-                highlights the purpose.
-              </p>
-              <Link
-                to='/events/6'
-                className='text-primary font-semibold underline'
-              >
-                Learn More
-              </Link>
-            </div>
+            {events
+              .filter((event) => event.isFeatured)
+              .map((event, index) => {
+                if (event.isFeatured) {
+                  return (
+                    <div
+                      key={index}
+                      className='bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow'
+                    >
+                      <img
+                        src={event.image}
+                        alt={event.title}
+                        className='w-full h-48 object-cover rounded-md mb-4'
+                      />
+                      <h2 className='text-xl font-semibold text-primary mb-2'>
+                        {event.title}
+                      </h2>
+                      <p className='text-gray-600 mb-4'>{event.description}</p>
+                      <Link
+                        to={`/events/${index + 1}`}
+                        className='text-primary font-semibold underline'
+                      >
+                        Learn More
+                      </Link>
+                    </div>
+                  );
+                } else {
+                  return;
+                }
+              })}
           </div>
 
           <div className='mt-10'>
