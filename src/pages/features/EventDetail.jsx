@@ -1,23 +1,32 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../../components/landing/Navbar';
 import events from '../../Data/events.json';
 import NotFoundPage from '../NotFound';
+import { getDocument } from '../../appwrite/database';
+import { getCurrentUser, logoutUser } from '../../appwrite/authentication';
+const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
+const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
 const EventDetail = () => {
-  const { eventId } = useParams();
-  const event = events[eventId - 1];
-  URL;
-  console.log(console.log(useParams()));
+  const { event_id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isLoggeIn, setISLoggedIn] = useState(true);
+  const [user, setUser] = useState({});
+  // const [event, setEvent] = useState({});
+  // const user = null;
+  const { event } = location.state || {};
 
-  if (!event) {
-    return <NotFoundPage />;
-  }
+  // Log parameters once when the component mounts
+  useEffect(() => {}, [event_id]);
+
+  if (!event) return <NotFoundPage />;
 
   return (
-    <div className='flex flex-col justify-between'>
+    <div className='flex flex-col min-h-screen'>
       <Navbar />
-      <div className='bg-secondary min-h-screen p-6 md:p-10 mt-10'>
+      <main className='bg-secondary flex-grow p-6 md:p-10 mt-10'>
         <div className='max-w-2xl mx-auto bg-white p-6 shadow-md rounded-lg'>
           <h1 className='text-3xl font-bold text-primary mb-4'>
             {event.title}
@@ -35,29 +44,34 @@ const EventDetail = () => {
           <p className='text-gray-600 mb-4'>
             <strong>Host:</strong> {event.host}
           </p>
+          {/* Message  */}
+          {!isLoggeIn && (
+            <p className='text-red-600 mb-4'>
+              <strong>Please Log In To signUp For An event</strong>
+            </p>
+          )}
 
           {/* Action Buttons */}
-          <div className='flex flex-col md:flex-row md:space-x-4'>
+          <div className='flex flex-col md:flex-row md:space-x-4 mt-6'>
             <button
-              className='bg-primary text-white py-2 px-6 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-primary'
-              aria-label={`Sign Up for ${event.title}`}
-              onClick={() => (window.location.href = event.registrationUrl)} // Redirect to registration URL
-            >
-              Sign Up
-            </button>
-            <button
-              className='bg-primary text-white py-2 px-6 mt-4 md:mt-0 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-primary'
-              aria-label={`Add ${event.title} to Calendar`}
+              className='bg-primary text-white py-2 px-6 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-primary hover:bg-primary-dark'
+              aria-label={`Sign up for ${event.title}`}
               onClick={() => {
-                // Implement calendar functionality here
-                alert(`Added ${event.title} to calendar!`);
+                if (!user) {
+                  setISLoggedIn(false);
+                  return;
+                }
+                setISLoggedIn(true);
+                navigate(`/events/${event_id}/register`, {
+                  state: { event: event },
+                });
               }}
             >
-              Add to Calendar
+              Sign Up For Event
             </button>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

@@ -1,13 +1,33 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../../components/landing/Navbar';
-import events from '../../Data/events.json';
+
+import { listDocuments } from '../../appwrite/database';
+import { useNavigate } from 'react-router-dom';
+const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
+const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
 const EventsList = () => {
   const startFocus = useRef();
+  const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    startFocus.current.focus();
-  });
+    if (startFocus.current) {
+      startFocus.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const events = await listDocuments(database_id, collection_id);
+        setEvents(events.documents);
+        console.log(events, 'EVENTS');
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   return (
     <div className='flex flex-col justify-between'>
@@ -16,6 +36,7 @@ const EventsList = () => {
         <h1
           className='text-3xl font-bold text-primary mb-8 text-center md:text-left'
           ref={startFocus}
+          tabIndex='-1'
         >
           All Events
         </h1>
@@ -49,7 +70,10 @@ const EventsList = () => {
               <button
                 className='mt-4 text-primary underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
                 aria-label={`View Details for ${event.title}`}
-                onClick={() => (window.location.href = `/events/${index + 1}`)} // Redirecting to event detail page
+                onClick={() =>
+                  navigate(`/events/${event.$id}`, { state: { event: event } })
+                }
+                // onClick={() => (window.location.href = `/events/${index + 1}`)} // Redirecting to event detail page
               >
                 View Details
               </button>

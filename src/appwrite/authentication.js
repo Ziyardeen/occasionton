@@ -4,7 +4,6 @@ import { Client, Account, Databases, ID } from 'appwrite';
 // Initialize Appwrite Client
 const endpoint = import.meta.env.VITE_APPWRITE_ENDPOINT;
 const project_id = import.meta.env.VITE_APPWRITE_PROJECT_ID;
-console.log(endpoint, project_id);
 
 const client = new Client().setEndpoint(endpoint).setProject(project_id);
 const account = new Account(client);
@@ -47,6 +46,16 @@ export const loginUser = async (email, password) => {
     return session;
   } catch (error) {
     throw new Error(`Login Error: ${error.message}`);
+  }
+};
+
+// get Logged In user
+export const getCurrentUser = async () => {
+  try {
+    const user = await account.get('current');
+    return user;
+  } catch (error) {
+    throw new Error(`Get User  Error: ${error.message}`);
   }
 };
 

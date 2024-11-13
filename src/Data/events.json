@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "title": "Jazz in the Park",
     "description": "Enjoy an evening of live jazz music under the stars.",
     "date": "2024-05-15T19:00:00Z",
@@ -12,13 +11,9 @@
     "price": 0.0,
     "maxAttendees": 1000,
     "isFeatured": false,
-    "registrationUrl": "https://example.com/register/jazz-in-the-park",
-    "createdAt": "2024-02-10T13:45:30Z",
-    "updatedAt": "2024-02-15T15:32:20Z",
-    "status": "Active"
+    "attendees": []
   },
   {
-    "id": 2,
     "title": "Tech Innovators Conference 2024",
     "description": "Join industry leaders for talks on the latest in tech.",
     "date": "2024-06-20T09:00:00Z",
@@ -30,13 +25,9 @@
     "price": 200.0,
     "maxAttendees": 2000,
     "isFeatured": true,
-    "registrationUrl": "https://example.com/register/tech-innovators",
-    "createdAt": "2024-03-01T12:20:30Z",
-    "updatedAt": "2024-03-05T16:30:15Z",
-    "status": "Active"
+    "attendees": []
   },
   {
-    "id": 3,
     "title": "Yoga and Wellness Retreat",
     "description": "Relax, recharge, and rejuvenate with guided yoga sessions.",
     "date": "2024-07-10T07:30:00Z",
@@ -48,13 +39,9 @@
     "price": 150.0,
     "maxAttendees": 100,
     "isFeatured": true,
-    "registrationUrl": "https://example.com/register/yoga-retreat",
-    "createdAt": "2024-03-12T14:45:30Z",
-    "updatedAt": "2024-03-20T18:10:10Z",
-    "status": "Active"
+    "attendees": []
   },
   {
-    "id": 4,
     "title": "Annual Book Fair",
     "description": "Explore and purchase books from a variety of genres.",
     "date": "2024-04-05T10:00:00Z",
@@ -66,13 +53,9 @@
     "price": 5.0,
     "maxAttendees": 1500,
     "isFeatured": false,
-    "registrationUrl": "https://example.com/register/book-fair",
-    "createdAt": "2024-01-15T11:45:30Z",
-    "updatedAt": "2024-01-25T13:22:20Z",
-    "status": "Active"
+    "attendees": []
   },
   {
-    "id": 5,
     "title": "Startup Pitch Night",
     "description": "Watch top startups pitch to a panel of investors.",
     "date": "2024-08-01T18:00:00Z",
@@ -84,13 +67,9 @@
     "price": 0.0,
     "maxAttendees": 300,
     "isFeatured": false,
-    "registrationUrl": "https://example.com/register/startup-pitch",
-    "createdAt": "2024-03-05T09:25:30Z",
-    "updatedAt": "2024-03-15T11:32:20Z",
-    "status": "Active"
+    "attendees": []
   },
   {
-    "id": 6,
     "title": "Wine and Cheese Tasting",
     "description": "Experience the best wine and cheese pairings.",
     "date": "2024-09-05T17:00:00Z",
@@ -102,13 +81,9 @@
     "price": 50.0,
     "maxAttendees": 200,
     "isFeatured": true,
-    "registrationUrl": "https://example.com/register/wine-tasting",
-    "createdAt": "2024-04-01T12:00:00Z",
-    "updatedAt": "2024-04-10T14:15:20Z",
-    "status": "Active"
+    "attendees": []
   },
   {
-    "id": 7,
     "title": "Photography Workshop",
     "description": "Learn photography basics from professionals.",
     "date": "2024-04-20T10:00:00Z",
@@ -120,13 +95,9 @@
     "price": 100.0,
     "maxAttendees": 50,
     "isFeatured": false,
-    "registrationUrl": "https://example.com/register/photo-workshop",
-    "createdAt": "2024-02-15T14:30:00Z",
-    "updatedAt": "2024-02-20T17:45:30Z",
-    "status": "Active"
+    "attendees": []
   },
   {
-    "id": 8,
     "title": "Outdoor Adventure Expo",
     "description": "Discover the latest gear and trips for outdoor enthusiasts.",
     "date": "2024-08-10T10:00:00Z",
@@ -138,13 +109,9 @@
     "price": 20.0,
     "maxAttendees": 1000,
     "isFeatured": true,
-    "registrationUrl": "https://example.com/register/outdoor-expo",
-    "createdAt": "2024-03-10T15:00:00Z",
-    "updatedAt": "2024-03-15T18:00:00Z",
-    "status": "Active"
+    "attendees": []
   },
   {
-    "id": 9,
     "title": "Community Cleanup Day",
     "description": "Help clean up the local park and enjoy free refreshments.",
     "date": "2024-04-22T08:00:00Z",
@@ -156,13 +123,9 @@
     "price": 0.0,
     "maxAttendees": 200,
     "isFeatured": false,
-    "registrationUrl": "https://example.com/register/community-cleanup",
-    "createdAt": "2024-02-20T10:30:00Z",
-    "updatedAt": "2024-02-25T12:15:30Z",
-    "status": "Active"
+    "attendees": []
   },
   {
-    "id": 10,
     "title": "Coding Bootcamp",
     "description": "Learn to code with hands-on projects and mentorship.",
     "date": "2024-09-15T09:00:00Z",
@@ -174,9 +137,6 @@
     "price": 300.0,
     "maxAttendees": 100,
     "isFeatured": true,
-    "registrationUrl": "https://example.com/register/coding-bootcamp",
-    "createdAt": "2024-05-01T10:00:00Z",
-    "updatedAt": "2024-05-05T11:30:20Z",
-    "status": "Active"
+    "attendees": []
   }
 ]

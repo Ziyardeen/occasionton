@@ -1,10 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/landing/Navbar';
-import events from '../../Data/events.json';
+
+import { deleteAttendees, listDocuments } from '../../appwrite/database';
+const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
+const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
 const Homepage = () => {
-  console.log(events);
+  const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const events = await listDocuments(database_id, collection_id);
+        setEvents(events.documents);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
   return (
     <div className='flex flex-col justify-between'>
       <Navbar />
@@ -38,12 +53,17 @@ const Homepage = () => {
                       {event.title}
                     </h2>
                     <p className='text-gray-600 mb-4'>{event.description}</p>
-                    <Link
-                      to={`/events/${index + 1}`}
+                    <button
+                      // to={`/events/${event.$id}`}
+                      onClick={() =>
+                        navigate(`/events/${event.$id}`, {
+                          state: { event: event },
+                        })
+                      }
                       className='text-primary font-semibold underline'
                     >
                       Learn More
-                    </Link>
+                    </button>
                   </div>
                 );
               })}
