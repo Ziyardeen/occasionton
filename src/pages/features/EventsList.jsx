@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
+console.log(database_id);
+
 const EventsList = () => {
   const startFocus = useRef();
   const [events, setEvents] = useState([]);
