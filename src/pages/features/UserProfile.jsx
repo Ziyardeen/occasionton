@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Navbar from '../../components/landing/Navbar';
-import eventsData from '../../Data/events.json'; // Assuming you have an events.json file with event data
+import { deleteAttendees, listDocuments } from '../../appwrite/database';
+import { UserContext } from '../../App';
+const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
+const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
 const UserProfile = () => {
   // Sample data for user's signed-up events
-  const [userEvents, setUserEvents] = useState([
-    eventsData[0], // Example event 1
-    eventsData[1], // Example event 2
-  ]);
+  const [userEvents, setUserEvents] = useState([]);
+
+  const user = useContext(UserContext);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const eventsData = await listDocuments(database_id, collection_id);
+        const filteredEvents = eventsData.documents.filter((event) => {
+          return event.attendees.includes(user.$id);
+        });
+        setUserEvents(filteredEvents);
+        // setFilteredEvents(eventsData.documents); // Initialize filtered events
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   // State for user preferences
   const [preferences, setPreferences] = useState({
@@ -25,12 +42,17 @@ const UserProfile = () => {
   };
 
   // Function to handle event cancellation
-  const handleCancelEvent = (eventTitle) => {
-    const updatedEvents = userEvents.filter(
-      (event) => event.title !== eventTitle
-    );
-    setUserEvents(updatedEvents);
-    alert(`${eventTitle} has been cancelled.`);
+  const handleCancelEvent = async (event) => {
+    try {
+      await deleteAttendees(database_id, collection_id, event.$id, user.$id);
+      setUserEvents((prevEvents) =>
+        prevEvents.filter((e) => e.$id !== event.$id)
+      );
+
+      alert(`${event.title} has been cancelled.`);
+    } catch (error) {}
+    console.log('Error cancelling Event: ');
+    // setUserEvents(updatedEvents);
   };
 
   return (
@@ -60,7 +82,7 @@ const UserProfile = () => {
                     </p>
                     <button
                       className='mt-2 text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-                      onClick={() => handleCancelEvent(event.title)}
+                      onClick={() => handleCancelEvent(event)}
                       aria-label={`Cancel ${event.title}`}
                     >
                       Cancel Event

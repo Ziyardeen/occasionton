@@ -66,8 +66,6 @@ const SignUp = () => {
 
       console.log(register);
 
-      // Alhassan@9165
-
       setEmail('');
       setName('');
       setPassword('');
@@ -201,7 +199,7 @@ const SignUp = () => {
             </button>
             <p className='mt-4 text-center'>
               Already have an account?
-              <a href='/login' className='text-primary hover:underline'>
+              <a href='/signin' className='text-primary hover:underline'>
                 {' '}
                 Log in here
               </a>

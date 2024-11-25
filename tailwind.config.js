@@ -26,6 +26,9 @@ export default {
           '100%': { opacity: '1' },
         },
       },
+      fontSize: {
+        'drop-down': '1.2rem',
+      },
     },
   },
   plugins: [],

@@ -1,5 +1,5 @@
 // auth.js
-import { Client, Account, Databases, ID } from 'appwrite';
+import { Client, Account, Databases, ID, Storage } from 'appwrite';
 
 // Initialize Appwrite Client
 const endpoint = import.meta.env.VITE_APPWRITE_ENDPOINT;
@@ -8,13 +8,14 @@ const project_id = import.meta.env.VITE_APPWRITE_PROJECT_ID;
 const client = new Client().setEndpoint(endpoint).setProject(project_id);
 const account = new Account(client);
 const databases = new Databases(client);
+const storage = new Storage(client);
 
-// Replace these with your Appwrite database and collection IDs
-// const database_id = import.meta.VITE_APPWRITE_DATABASE_ID;
-// const collection_id = import.meta.VITE_APPWRITE_EVENTS_COLLECTION_ID;
+const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
+const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
+const events_bucket_id = import.meta.env.VITE_APPWRITE_EVENTS_STORAGE_BUCKET_ID;
 
 // Create Document
-export const createDocument = async (database_id, collection_id, data) => {
+export const createDocument = async (data) => {
   try {
     const response = await databases.createDocument(
       database_id,
@@ -47,7 +48,7 @@ export const getDocument = async (database_id, collection_id, document_id) => {
 };
 
 // List All Documents
-export const listDocuments = async (database_id, collection_id) => {
+export const listDocuments = async () => {
   try {
     const response = await databases.listDocuments(database_id, collection_id);
 
@@ -130,7 +131,7 @@ export async function deleteAttendees(
   try {
     const event = await getDocument(database_id, collection_id, document_id);
     const attendeeList = event.attendees.filter((user) => user !== newAttendee);
-    // const updatedAttendees = [...attendeeList, newAttendee];
+
     const update = await updateDocument(
       database_id,
       collection_id,
@@ -142,3 +143,20 @@ export async function deleteAttendees(
     console.error('Deletion of Attendees Error:', error);
   }
 }
+
+// FILES STORAGE
+export const uploadImage = async (ImageFile) => {
+  try {
+    const upload = await storage.createFile(
+      events_bucket_id,
+      ID.unique(),
+      ImageFile
+    );
+    const image = storage.getFileView(events_bucket_id, upload.$id);
+    console.log('Image Uploaded successfully');
+    return image;
+  } catch (error) {
+    console.error('Error Uploading Image:', error);
+    throw error;
+  }
+};

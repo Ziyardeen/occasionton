@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../../components/landing/Navbar';
 import events from '../../Data/events.json';
 import NotFoundPage from '../NotFound';
+import ReactModal from 'react-modal';
+import LogIn from '../authPages/LogIn';
 import { getDocument } from '../../appwrite/database';
 import { getCurrentUser, logoutUser } from '../../appwrite/authentication';
+import ModalLogIn from '../authPages/modal/ModalLogIn';
+import { UserContext } from '../../App';
+
+ReactModal.setAppElement('#root');
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
@@ -13,13 +19,24 @@ const EventDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggeIn, setISLoggedIn] = useState(true);
-  const [user, setUser] = useState({});
-  // const [event, setEvent] = useState({});
-  // const user = null;
+  const user = useContext(UserContext);
+  const [modalShow, setModalShow] = useState(false);
   const { event } = location.state || {};
 
-  // Log parameters once when the component mounts
   useEffect(() => {}, [event_id]);
+  const handleSignUp = () => {
+    if (Object.keys(user) === 0) {
+      setISLoggedIn(false);
+      setModalShow(true);
+      return;
+    }
+    setISLoggedIn(true);
+    setModalShow(false);
+
+    navigate(`/events/${event_id}/register`, {
+      state: { event: event },
+    });
+  };
 
   if (!event) return <NotFoundPage />;
 
@@ -36,6 +53,9 @@ const EventDetail = () => {
             <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
           </p>
           <p className='text-gray-600 mb-4'>
+            <strong>Duration:</strong> {`${event.startTime} - ${event.endTime}`}
+          </p>
+          <p className='text-gray-600 mb-4'>
             <strong>Location:</strong> {event.location}
           </p>
           <p className='text-gray-600 mb-4'>
@@ -44,34 +64,42 @@ const EventDetail = () => {
           <p className='text-gray-600 mb-4'>
             <strong>Host:</strong> {event.host}
           </p>
-          {/* Message  */}
+
           {!isLoggeIn && (
             <p className='text-red-600 mb-4'>
               <strong>Please Log In To signUp For An event</strong>
             </p>
           )}
 
-          {/* Action Buttons */}
           <div className='flex flex-col md:flex-row md:space-x-4 mt-6'>
             <button
               className='bg-primary text-white py-2 px-6 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-primary hover:bg-primary-dark'
               aria-label={`Sign up for ${event.title}`}
-              onClick={() => {
-                if (!user) {
-                  setISLoggedIn(false);
-                  return;
-                }
-                setISLoggedIn(true);
-                navigate(`/events/${event_id}/register`, {
-                  state: { event: event },
-                });
-              }}
+              onClick={handleSignUp}
             >
               Sign Up For Event
             </button>
           </div>
         </div>
       </main>
+
+      <ReactModal
+        isOpen={modalShow}
+        onRequestClose={() => setModalShow(false)}
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+          },
+          content: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignSelf: 'center',
+            border: 'none',
+          },
+        }}
+      >
+        <ModalLogIn event={event} />
+      </ReactModal>
     </div>
   );
 };

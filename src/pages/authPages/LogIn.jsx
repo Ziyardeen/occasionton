@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import loginImage from '../../assets/login-image.jpg';
 import Header from '../../components/landing/Header';
-import { loginUser } from '../../appwrite/authentication';
+import { getCurrentUser, loginUser } from '../../appwrite/authentication';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
@@ -10,10 +10,24 @@ const LogIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [user, setUser] = useState({});
   const navigate = useNavigate();
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await getCurrentUser();
+        if (Object.keys(user).length > 0) {
+          navigate('/homepage');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

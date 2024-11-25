@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import events from '../../Data/events.json';
 import NotFoundPage from '../NotFound';
 import { addAttendee } from '../../appwrite/database';
+import { UserContext } from '../../App';
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
 const EventRegistration = () => {
-  const { event_id } = useParams();
-
   const navigate = useNavigate();
   const [paymentStatus, setPaymentStatus] = useState('not_paid');
   const location = useLocation();
+  const user = useContext(UserContext);
 
   const event = location.state.event || {};
-  // Hardcoded user data
-  const user = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-  };
 
   // Automatically mark payment as complete if the event is free
   useEffect(() => {
@@ -47,7 +42,7 @@ const EventRegistration = () => {
         database_id,
         collection_id,
         event.$id,
-        'Ziyardeen'
+        user.$id
       );
       console.log('Registration confirmed:', attendee);
       navigate(`/events/${event.$id}/confirmation`, {
@@ -79,6 +74,10 @@ const EventRegistration = () => {
         {/* Event Details */}
         <p className='text-gray-600 mb-4'>
           <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
+        </p>
+        <p className='text-gray-600 mb-4'>
+          <strong>Duration: </strong>
+          {`${event.startTime} - ${event.endTime}`}
         </p>
         <p className='text-gray-600 mb-4'>
           <strong>Location:</strong> {event.location}
