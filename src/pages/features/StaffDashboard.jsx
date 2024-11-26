@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Navbar from '../../components/landing/Navbar';
+import Navbar from '../../components/Navbar';
 
 import {
   createDocument,
@@ -21,14 +21,18 @@ const StaffDashboard = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredEvents, setFilteredEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const events = await listDocuments();
         setEvents(events.documents);
+        setLoading(false);
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     })();
   }, []);
@@ -74,7 +78,6 @@ const StaffDashboard = () => {
       formatedValue = false;
     }
 
-    console.log(formatedValue, '||||||');
     setNewEvent({
       ...newEvent,
       [name]: formatedValue,
@@ -133,7 +136,7 @@ const StaffDashboard = () => {
               isFeatured: newEvent.isFeatured,
             }
           );
-          console.log(updatedDocument, '<<<<<<<');
+
           ////set Editing to False
           setEditing(false);
           setNewEvent({
@@ -251,7 +254,7 @@ const StaffDashboard = () => {
   const handleImageFileChange = async (e) => {
     const name = e.target.name;
     const value = e.target.files[0] || e.target.value;
-    console.log(value, 'OOOOOPPPPPP');
+
     setImageData(value);
   };
 
@@ -478,47 +481,51 @@ const StaffDashboard = () => {
           </div>
 
           {/* Managed Events List */}
-          <div className='space-y-4'>
-            {filteredEvents.map((event, index) => (
-              <div
-                key={index}
-                className='p-4 bg-white shadow-md rounded-md flex flex-row md:flex-row justify-between items-center max-h-1/4'
-              >
-                <div className='w-1/4 mx-2'>
-                  <img
-                    src={
-                      event.image ||
-                      'https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg?t=st=1732285408~exp=1732289008~hmac=f9ba003e38301123560c0252b61bf57c193922be153f5b6f918f474d30c84beb&w=826'
-                    }
-                    alt=''
-                    className=''
-                  />
+          {loading ? (
+            <>Laoding.......</>
+          ) : (
+            <div className='space-y-4'>
+              {filteredEvents.map((event, index) => (
+                <div
+                  key={index}
+                  className='p-4 bg-white shadow-md rounded-md flex flex-row md:flex-row justify-between items-center max-h-1/4'
+                >
+                  <div className='w-1/4 mx-2'>
+                    <img
+                      src={
+                        event.image ||
+                        'https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg?t=st=1732285408~exp=1732289008~hmac=f9ba003e38301123560c0252b61bf57c193922be153f5b6f918f474d30c84beb&w=826'
+                      }
+                      alt=''
+                      className=''
+                    />
+                  </div>
+                  <div>
+                    <h2 className='text-xl font-semibold text-primary'>
+                      {event.title}
+                    </h2>
+                    <p className='text-gray-600'>{event.description}</p>
+                  </div>
+                  <div className='flex space-x-2 mt-4 md:mt-0'>
+                    <button
+                      className='text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
+                      aria-label={`Edit ${event.title}`}
+                      onClick={() => handleEdit(event)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className='text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+                      onClick={() => handleDeleteEvent(event)}
+                      aria-label={`Delete ${event.title}`}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <h2 className='text-xl font-semibold text-primary'>
-                    {event.title}
-                  </h2>
-                  <p className='text-gray-600'>{event.description}</p>
-                </div>
-                <div className='flex space-x-2 mt-4 md:mt-0'>
-                  <button
-                    className='text-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
-                    aria-label={`Edit ${event.title}`}
-                    onClick={() => handleEdit(event)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className='text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-                    onClick={() => handleDeleteEvent(event)}
-                    aria-label={`Delete ${event.title}`}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

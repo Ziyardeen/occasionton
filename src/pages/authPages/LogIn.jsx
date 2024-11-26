@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import loginImage from '../../assets/login-image.jpg';
-import Header from '../../components/landing/Header';
+import Header from '../../components/Header';
 import { getCurrentUser, loginUser } from '../../appwrite/authentication';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

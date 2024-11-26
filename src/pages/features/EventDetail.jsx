@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import Navbar from '../../components/landing/Navbar';
+import Navbar from '../../components/Navbar';
 import events from '../../Data/events.json';
 import NotFoundPage from '../NotFound';
 import ReactModal from 'react-modal';
@@ -59,7 +59,7 @@ const EventDetail = () => {
             <strong>Location:</strong> {event.location}
           </p>
           <p className='text-gray-600 mb-4'>
-            <strong>Price:</strong> ${event.price}
+            <strong>Price:</strong> £{event.price}
           </p>
           <p className='text-gray-600 mb-4'>
             <strong>Host:</strong> {event.host}

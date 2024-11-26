@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Navbar from '../../components/landing/Navbar';
+import Navbar from '../../components/Navbar';
 import { listDocuments } from '../../appwrite/database';
 import { useNavigate } from 'react-router-dom';
 
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
-
-console.log(database_id);
 
 const EventsList = () => {
   const startFocus = useRef();
@@ -15,6 +13,7 @@ const EventsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState([]);
   const [eventsPerPage] = useState(8);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,9 +25,11 @@ const EventsList = () => {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const eventsData = await listDocuments(database_id, collection_id);
         setEvents(eventsData.documents);
-        setFilteredEvents(eventsData.documents); // Initialize filtered events
+        setFilteredEvents(eventsData.documents);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -38,11 +39,13 @@ const EventsList = () => {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const eventsData = await listDocuments(database_id, collection_id);
         const categories = Array.from(
           new Set(eventsData.documents.map((event) => event.category))
         );
         setCategories(categories);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -116,39 +119,45 @@ const EventsList = () => {
         </div>
 
         {/* Event List */}
-        <div className='grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-          {currentEvents.map((event, index) => (
-            <div key={index} className='p-4 bg-white shadow-lg rounded-md'>
-              {event.image ? (
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className='w-full h-48 object-cover rounded-md'
-                />
-              ) : (
-                <img
-                  src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg?t=st=1732285408~exp=1732289008~hmac=f9ba003e38301123560c0252b61bf57c193922be153f5b6f918f474d30c84beb&w=826'
-                  alt={event.title}
-                  className='w-full h-48 object-cover rounded-md'
-                />
-              )}
+        {loading ? (
+          <>Loading........</>
+        ) : (
+          <div className='grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+            {currentEvents.map((event, index) => (
+              <div key={index} className='p-4 bg-white shadow-lg rounded-md'>
+                {event.image ? (
+                  <img
+                    src={event.image}
+                    alt={event.title}
+                    className='w-full h-48 object-cover rounded-md'
+                  />
+                ) : (
+                  <img
+                    src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg?t=st=1732285408~exp=1732289008~hmac=f9ba003e38301123560c0252b61bf57c193922be153f5b6f918f474d30c84beb&w=826'
+                    alt={event.title}
+                    className='w-full h-48 object-cover rounded-md'
+                  />
+                )}
 
-              <h2 className='text-2xl font-semibold text-primary mt-4'>
-                {event.title}
-              </h2>
-              <p className='text-gray-700 mt-2'>{event.description}</p>
-              <button
-                className='mt-4 text-primary underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
-                aria-label={`View Details for ${event.title}`}
-                onClick={() =>
-                  navigate(`/events/${event.$id}`, { state: { event: event } })
-                }
-              >
-                View Details
-              </button>
-            </div>
-          ))}
-        </div>
+                <h2 className='text-2xl font-semibold text-primary mt-4'>
+                  {event.title}
+                </h2>
+                <p className='text-gray-700 mt-2'>{event.description}</p>
+                <button
+                  className='mt-4 text-primary underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
+                  aria-label={`View Details for ${event.title}`}
+                  onClick={() =>
+                    navigate(`/events/${event.$id}`, {
+                      state: { event: event },
+                    })
+                  }
+                >
+                  View Details
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Pagination Controls */}
         <div className='flex justify-between items-center mt-8 '>

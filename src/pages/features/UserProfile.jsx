@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Navbar from '../../components/landing/Navbar';
+import Navbar from '../../components/Navbar';
 import { deleteAttendees, listDocuments } from '../../appwrite/database';
 import { UserContext } from '../../App';
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
@@ -8,19 +8,22 @@ const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 const UserProfile = () => {
   // Sample data for user's signed-up events
   const [userEvents, setUserEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const user = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const eventsData = await listDocuments(database_id, collection_id);
         const filteredEvents = eventsData.documents.filter((event) => {
           return event.attendees.includes(user.$id);
         });
         setUserEvents(filteredEvents);
-        // setFilteredEvents(eventsData.documents); // Initialize filtered events
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     })();

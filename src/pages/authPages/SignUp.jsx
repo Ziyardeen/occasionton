@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import signupImage from '../../assets/signup-image.jpg';
-import Header from '../../components/landing/Header';
+import Header from '../../components/Header';
 import {
   loginUser,
   logoutUser,
@@ -9,8 +9,6 @@ import {
 } from '../../appwrite/authentication';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-// https://www.vecteezy.com/vector-art/40674548-signup-vector-icon
 
 const SignUp = () => {
   const [password, setPassword] = useState('');
@@ -74,10 +72,7 @@ const SignUp = () => {
       setSuccess(true);
       toast.success('Registration successful!');
     } catch (error) {
-      if (
-        error.message ===
-        'Registration Error: A user with the same id, email, or phone already exists in this project.'
-      ) {
+      if (error.code === 409) {
         setMessage('You already have an account, please go ahead and login.');
       } else {
         setMessage('Registration failed. Please try again.');
