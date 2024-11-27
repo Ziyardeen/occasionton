@@ -17,10 +17,8 @@ const UserProfile = () => {
       try {
         setLoading(true);
         const eventsData = await listDocuments(database_id, collection_id);
-        const filteredEvents = eventsData.documents.filter((event) => {
-          return event.attendees.includes(user.$id);
-        });
-        setUserEvents(filteredEvents);
+
+        setUserEvents(eventsData.documents);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -30,10 +28,6 @@ const UserProfile = () => {
   }, []);
 
   // State for user preferences
-  const [preferences, setPreferences] = useState({
-    emailNotifications: true,
-    smsNotifications: false,
-  });
 
   // Function to handle preference changes
   const handlePreferenceChange = (e) => {
@@ -68,30 +62,36 @@ const UserProfile = () => {
           {/* Signed-Up Events */}
           <div className='mb-8'>
             <h2 className='text-2xl font-semibold text-primary'>Your Events</h2>
+
             {userEvents.length > 0 ? (
               <ul className='space-y-4'>
-                {userEvents.map((event, index) => (
-                  <li key={index} className='p-4 bg-gray-100 rounded-md shadow'>
-                    <h3 className='text-xl font-semibold text-primary'>
-                      {event.title}
-                    </h3>
-                    <p className='text-gray-700'>{event.description}</p>
-                    <p className='text-gray-600'>
-                      <strong>Date:</strong>{' '}
-                      {new Date(event.date).toLocaleDateString()}
-                    </p>
-                    <p className='text-gray-600'>
-                      <strong>Location:</strong> {event.location}
-                    </p>
-                    <button
-                      className='mt-2 text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-                      onClick={() => handleCancelEvent(event)}
-                      aria-label={`Cancel ${event.title}`}
+                {userEvents
+                  .filter((event) => event.attendees.includes(user.$id))
+                  .map((event, index) => (
+                    <li
+                      key={index}
+                      className='p-4 bg-gray-100 rounded-md shadow'
                     >
-                      Cancel Event
-                    </button>
-                  </li>
-                ))}
+                      <h3 className='text-xl font-semibold text-primary'>
+                        {event.title}
+                      </h3>
+                      <p className='text-gray-700'>{event.description}</p>
+                      <p className='text-gray-600'>
+                        <strong>Date:</strong>{' '}
+                        {new Date(event.date).toLocaleDateString()}
+                      </p>
+                      <p className='text-gray-600'>
+                        <strong>Location:</strong> {event.location}
+                      </p>
+                      <button
+                        className='mt-2 text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+                        onClick={() => handleCancelEvent(event)}
+                        aria-label={`Cancel ${event.title}`}
+                      >
+                        Cancel Event
+                      </button>
+                    </li>
+                  ))}
               </ul>
             ) : (
               <p className='text-gray-700'>
@@ -100,39 +100,9 @@ const UserProfile = () => {
             )}
           </div>
 
-          {/* User Preferences */}
-          <div>
-            <h2 className='text-2xl font-semibold text-primary'>Preferences</h2>
-            <div className='mt-4'>
-              <label className='flex items-center'>
-                <input
-                  type='checkbox'
-                  name='emailNotifications'
-                  checked={preferences.emailNotifications}
-                  onChange={handlePreferenceChange}
-                  className='mr-2'
-                />
-                Email Notifications
-              </label>
-              <label className='flex items-center mt-2'>
-                <input
-                  type='checkbox'
-                  name='smsNotifications'
-                  checked={preferences.smsNotifications}
-                  onChange={handlePreferenceChange}
-                  className='mr-2'
-                />
-                SMS Notifications
-              </label>
-            </div>
-            <div className='mt-4'>
-              <button
-                className='bg-primary text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
-                onClick={() => alert('Preferences saved!')}
-              >
-                Save Preferences
-              </button>
-            </div>
+          {/* User Logout */}
+          <div className='w-full flex justify-center'>
+            <button className='bg-red-500 w-20 h-10 rounded-md '>Logout</button>
           </div>
         </div>
       </div>

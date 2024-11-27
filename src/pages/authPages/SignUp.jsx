@@ -9,6 +9,8 @@ import {
 } from '../../appwrite/authentication';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+const devEnvironment = import.meta.env.DEV;
+console.log(import.meta.env);
 
 const SignUp = () => {
   const [password, setPassword] = useState('');
@@ -58,7 +60,9 @@ const SignUp = () => {
 
       const register = await registerUser(email, password, name);
       const userLogin = await loginUser(email, password);
-      const callbackUrl = 'http://localhost:5173/verify';
+      const callbackUrl = devEnvironment
+        ? 'http://localhost:5173/verify'
+        : 'https://occasionton.netlify.app/verify';
       await sendVerificationEmail(callbackUrl);
       await logoutUser();
 
