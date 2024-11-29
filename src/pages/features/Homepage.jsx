@@ -64,7 +64,6 @@ const Homepage = () => {
                       </h2>
                       <p className='text-gray-600 mb-4'>{event.description}</p>
                       <button
-                        // to={`/events/${event.$id}`}
                         onClick={() =>
                           navigate(`/events/${event.$id}`, {
                             state: { event: event },

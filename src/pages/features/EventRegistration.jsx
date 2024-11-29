@@ -86,7 +86,7 @@ const EventRegistration = () => {
         </p>
         <p className='text-gray-600 mb-6'>
           <strong>Price:</strong>{' '}
-          {event.price === 0 ? 'Free' : `$${event.price}`}
+          {event.price === 0 ? 'Free' : `£${event.price}`}
         </p>
 
         <div>
@@ -96,7 +96,7 @@ const EventRegistration = () => {
               onClick={handlePayment}
               className='mx-2 bg-primary text-white py-2 px-6 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-primary hover:bg-primary-dark mb-4'
             >
-              Pay ${event.price}
+              Pay £{event.price}
             </button>
           ) : (
             <p className='text-green-600 font-semibold mb-4'>
