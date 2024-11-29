@@ -53,7 +53,7 @@ const UserProfile = () => {
       setUserEvents((prevEvents) =>
         prevEvents.filter((e) => e.$id !== event.$id)
       );
-      toast.error(`${event.title} has been cancelled successfully!.`);
+      toast.success(`${event.title} has been cancelled successfully!.`);
     } catch (error) {
       toast.error('Error Cancelling Event');
     }

@@ -2,16 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import NotFoundPage from '../NotFound';
-
-// import { ToastContainer, toast } from 'react-toastify';
-// const [message, setMessage] = useState('');
-// const [success, SetSuccess] = useState(false);
-// SetSuccess(true);
-// toast(message);
-// SetSuccess(false);
-// {
-//   !success && <ToastContainer />;
-// }
+import { toast } from 'react-toastify';
 
 const RegistrationConfirmation = () => {
   const location = useLocation();
