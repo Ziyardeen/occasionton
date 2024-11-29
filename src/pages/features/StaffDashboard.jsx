@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../../components/Navbar';
+import { ToastContainer, toast } from 'react-toastify';
 
 import {
   createDocument,
@@ -10,6 +11,16 @@ import {
 } from '../../appwrite/database';
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
+
+//
+// const [message, setMessage] = useState('');
+// const [success, SetSuccess] = useState(false);
+// SetSuccess(true);
+// toast(message);
+// SetSuccess(false);
+// {
+//   !success && <ToastContainer />;
+// }
 
 const StaffDashboard = () => {
   const [events, setEvents] = useState([]);
@@ -31,8 +42,8 @@ const StaffDashboard = () => {
         setEvents(events.documents);
         setLoading(false);
       } catch (error) {
-        console.log(error);
         setLoading(false);
+        toast.error('Something went wrong fetching events');
       }
     })();
   }, []);
@@ -111,10 +122,8 @@ const StaffDashboard = () => {
     try {
       if (switchToImageFile) {
         const result = await uploadImage(imageData);
-        console.log(result, 'OOOOOOOOOOO', Editing);
+
         if (Editing) {
-          ////Appwrite Update Function Will be Here
-          console.log('HERE HERE');
           const updatedDocument = await updateDocument(
             database_id,
             collection_id,
@@ -179,9 +188,6 @@ const StaffDashboard = () => {
         });
       } else {
         if (Editing) {
-          console.log(newEvent, '<<<<<');
-          ////Appwrite Update Function Will be Here
-          console.log('HERE HERE', newEvent.isFeatured);
           const updatedDocument = await updateDocument(
             database_id,
             collection_id,
@@ -203,8 +209,7 @@ const StaffDashboard = () => {
               isFeatured: Boolean(newEvent.isFeatured),
             }
           );
-          console.log(updatedDocument, '<<<<<<<');
-          ////set Editing to False
+
           setEditing(false);
           setNewEvent({
             title: '',
@@ -244,10 +249,9 @@ const StaffDashboard = () => {
           attendees: [],
           isFeatured: false,
         });
-        console.log('???????', event);
       }
     } catch (error) {
-      console.log(error);
+      toast.error('Something went wrong creating the event');
     }
   };
 
@@ -265,9 +269,9 @@ const StaffDashboard = () => {
       const updatedEvents = events.filter((event) => event.title !== title);
       setEvents(updatedEvents);
       await deleteDocument(database_id, collection_id, event.$id);
-      console.log('Deleted Successfully');
+      toast.success('Event deleted successully!');
     } catch (error) {
-      console.log('Something went wrong Deleting event: ', error);
+      toast.error('Something went wrong Deleting event');
     }
   };
 
@@ -528,6 +532,19 @@ const StaffDashboard = () => {
           )}
         </div>
       </div>
+      {/* Toast Notifications */}
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='colored'
+      />
     </div>
   );
 };

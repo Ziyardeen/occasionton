@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../../components/Navbar';
 import { listDocuments } from '../../appwrite/database';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
@@ -31,7 +32,7 @@ const EventsList = () => {
         setFilteredEvents(eventsData.documents);
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        toast.error('Something went wrong fetchimng events!!');
       }
     })();
   }, []);
@@ -47,6 +48,7 @@ const EventsList = () => {
         setCategories(categories);
         setLoading(false);
       } catch (error) {
+        toast.error('Something went wrong getting categories !!');
         console.log(error);
       }
     })();
@@ -181,6 +183,18 @@ const EventsList = () => {
           </button>
         </div>
       </div>
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='colored'
+      />
     </div>
   );
 };

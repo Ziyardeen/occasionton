@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
-import events from '../../Data/events.json';
+
 import NotFoundPage from '../NotFound';
 import ReactModal from 'react-modal';
 import LogIn from '../authPages/LogIn';
@@ -22,10 +22,14 @@ const EventDetail = () => {
   const user = useContext(UserContext);
   const [modalShow, setModalShow] = useState(false);
   const { event } = location.state || {};
+  const [message, setMessage] = useState('');
+
+  console.log(user, Object.keys(user));
 
   useEffect(() => {}, [event_id]);
+
   const handleSignUp = () => {
-    if (Object.keys(user) === 0) {
+    if (Object.keys(user).length === 0) {
       setISLoggedIn(false);
       setModalShow(true);
       return;

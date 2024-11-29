@@ -2,13 +2,19 @@ import React, { useContext, useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar';
 import { deleteAttendees, listDocuments } from '../../appwrite/database';
 import { UserContext } from '../../App';
+import { logoutUser } from '../../appwrite/authentication';
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 const UserProfile = () => {
-  // Sample data for user's signed-up events
   const [userEvents, setUserEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const user = useContext(UserContext);
 
@@ -17,25 +23,27 @@ const UserProfile = () => {
       try {
         setLoading(true);
         const eventsData = await listDocuments(database_id, collection_id);
-
         setUserEvents(eventsData.documents);
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        console.log(error);
+        toast.error('Something went wrong getting events.');
       }
     })();
   }, []);
 
-  // State for user preferences
-
-  // Function to handle preference changes
-  const handlePreferenceChange = (e) => {
-    const { name, checked } = e.target;
-    setPreferences({
-      ...preferences,
-      [name]: checked,
-    });
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      navigate('/home');
+      setSuccess(true);
+      setMessage('Logout Successfull !!');
+      toast.success('Logout Successfull !!');
+    } catch (error) {
+      setMessage('Error Logging Out');
+      toast.error('Error Logging Out');
+      setSuccess(false);
+    }
   };
 
   // Function to handle event cancellation
@@ -48,8 +56,7 @@ const UserProfile = () => {
 
       alert(`${event.title} has been cancelled.`);
     } catch (error) {}
-    console.log('Error cancelling Event: ');
-    // setUserEvents(updatedEvents);
+    toast.error('Error Cancelling Event');
   };
 
   return (
@@ -63,7 +70,9 @@ const UserProfile = () => {
           <div className='mb-8'>
             <h2 className='text-2xl font-semibold text-primary'>Your Events</h2>
 
-            {userEvents.length > 0 ? (
+            {loading ? (
+              <>Loading.....</>
+            ) : userEvents.length > 0 ? (
               <ul className='space-y-4'>
                 {userEvents
                   .filter((event) => event.attendees.includes(user.$id))
@@ -102,10 +111,16 @@ const UserProfile = () => {
 
           {/* User Logout */}
           <div className='w-full flex justify-center'>
-            <button className='bg-red-500 w-20 h-10 rounded-md '>Logout</button>
+            <button
+              className='bg-red-500 w-20 h-10 rounded-md '
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>
+      {!success && <ToastContainer />}
     </div>
   );
 };

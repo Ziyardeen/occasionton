@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaBars, FaCross, FaTimes } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
+import { getCurrentUser } from '../appwrite/authentication';
 
 const Navbar = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await getCurrentUser();
+        console.log(user);
+        setUser(user);
+      } catch (error) {
+        toast.error('Something went wrong fetching user!!');
+      }
+    })();
+  }, []);
+
+  console.log(user, user.labels);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -37,12 +53,14 @@ const Navbar = () => {
           >
             Profile
           </Link>
-          <Link
-            to='/staff-dashboard'
-            className={`hover:underline ${location.pathname === '/staff-dashboard' ? 'underline' : ''}`}
-          >
-            Staff Dashboard
-          </Link>
+          {Object.keys(user).length > 0 && user.labels.length > 0 ? (
+            <Link
+              to='/staff-dashboard'
+              className={`hover:underline ${location.pathname === '/staff-dashboard' ? 'underline' : ''}`}
+            >
+              Staff Dashboard
+            </Link>
+          ) : null}
         </div>
 
         {/* Hamburger Icon for Mobile */}
@@ -78,12 +96,14 @@ const Navbar = () => {
         >
           Profile
         </Link>
-        <Link
-          to='/staff-dashboard'
-          className={`hover:underline ${location.pathname === '/staff-dashboard' ? 'underline' : ''}`}
-        >
-          Staff Dashboard
-        </Link>
+        {Object.keys(user).length > 0 && user.labels.length > 0 ? (
+          <Link
+            to='/staff-dashboard'
+            className={`hover:underline ${location.pathname === '/staff-dashboard' ? 'underline' : ''}`}
+          >
+            Staff Dashboard
+          </Link>
+        ) : null}
       </div>
     </nav>
   );

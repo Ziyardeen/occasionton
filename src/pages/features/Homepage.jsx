@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { deleteAttendees, listDocuments } from '../../appwrite/database';
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
@@ -9,6 +10,8 @@ const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 const Homepage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [success, SetSuccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,8 +21,9 @@ const Homepage = () => {
         const events = await listDocuments(database_id, collection_id);
         setLoading(false);
         setEvents(events.documents);
+        SetSuccess(true);
       } catch (error) {
-        console.log(error);
+        toast.error('There was an error fetching events, try again.');
       }
     })();
   }, []);
@@ -73,6 +77,7 @@ const Homepage = () => {
                     </div>
                   );
                 })}
+              {!success && <ToastContainer />}
             </div>
           )}
 

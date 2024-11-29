@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import events from '../../Data/events.json';
+import { useNavigate, useLocation } from 'react-router-dom';
 import NotFoundPage from '../NotFound';
 import { addAttendee } from '../../appwrite/database';
 import { UserContext } from '../../App';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for styling
+
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
@@ -13,9 +15,8 @@ const EventRegistration = () => {
   const location = useLocation();
   const user = useContext(UserContext);
 
-  const event = location.state.event || {};
+  const event = location.state?.event || {};
 
-  // Automatically mark payment as complete if the event is free
   useEffect(() => {
     if (event && event.price === 0) {
       setPaymentStatus('paid');
@@ -24,32 +25,33 @@ const EventRegistration = () => {
 
   if (!event) return <NotFoundPage />;
 
-  // Simulate a payment process
   const handlePayment = async () => {
     try {
-      // Implement payment logic here (e.g., call a payment API)
-      alert(`Processing payment of $${event.price} for ${user.name}`);
       setPaymentStatus('paid');
+      toast.success('Payment successful!');
     } catch (error) {
-      alert('Payment failed, please try again.');
+      toast.error('Payment failed. Please try again.');
     }
   };
 
-  // Handle registration after payment
   const handleRegistration = async () => {
     if (paymentStatus === 'paid') {
-      const attendee = await addAttendee(
-        database_id,
-        collection_id,
-        event.$id,
-        user.$id
-      );
-      console.log('Registration confirmed:', attendee);
-      navigate(`/events/${event.$id}/confirmation`, {
-        state: { event: event },
-      });
+      try {
+        const attendee = await addAttendee(
+          database_id,
+          collection_id,
+          event.$id,
+          user.$id
+        );
+        toast.success('Registration confirmed!');
+        navigate(`/events/${event.$id}/confirmation`, {
+          state: { event: event },
+        });
+      } catch (error) {
+        toast.error('Registration failed. Please try again.');
+      }
     } else {
-      alert('Please complete the payment first');
+      toast.warn('Please complete the payment first.');
     }
   };
 
@@ -86,6 +88,7 @@ const EventRegistration = () => {
           <strong>Price:</strong>{' '}
           {event.price === 0 ? 'Free' : `$${event.price}`}
         </p>
+
         <div>
           {/* Payment Button */}
           {event.price > 0 && paymentStatus === 'not_paid' ? (
@@ -106,13 +109,31 @@ const EventRegistration = () => {
           {/* Confirm Registration Button */}
           <button
             onClick={handleRegistration}
-            className={`mx-2 bg-primary text-white py-2 px-6 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-primary hover:bg-primary-dark ${paymentStatus === 'not_paid' ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`mx-2 bg-primary text-white py-2 px-6 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-primary hover:bg-primary-dark ${
+              paymentStatus === 'not_paid'
+                ? 'opacity-50 cursor-not-allowed'
+                : ''
+            }`}
             disabled={paymentStatus === 'not_paid'}
           >
             Confirm Registration
           </button>
         </div>
       </div>
+
+      {/* Toast Notifications */}
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='colored'
+      />
     </main>
   );
 };

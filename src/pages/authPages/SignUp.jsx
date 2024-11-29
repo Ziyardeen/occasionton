@@ -10,7 +10,6 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const devEnvironment = import.meta.env.DEV;
-console.log(import.meta.env);
 
 const SignUp = () => {
   const [password, setPassword] = useState('');
@@ -54,7 +53,6 @@ const SignUp = () => {
         toast.error(
           'Password must be at least 8 characters, include uppercase and lowercase letters, a number, and a special character.'
         );
-        console.log('Password validation failed.');
         return;
       }
 
@@ -65,8 +63,6 @@ const SignUp = () => {
         : 'https://occasionton.netlify.app/verify';
       await sendVerificationEmail(callbackUrl);
       await logoutUser();
-
-      console.log(register);
 
       setEmail('');
       setName('');

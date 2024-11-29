@@ -20,6 +20,8 @@ const ModalLogIn = ({ event }) => {
     };
   }, []);
 
+  console.log('MODALLLLLLLLLL');
+
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 

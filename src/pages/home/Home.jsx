@@ -30,18 +30,18 @@ const Home = () => {
                 <>
                   <li>
                     <Link to='/homepage' className='hover:underline'>
-                      Features
+                      Application
                     </Link>
                   </li>
                   <li>
-                    <Link to='#how-it-works' className='hover:underline'>
+                    <a href='#how-it-works' className='hover:underline'>
                       How It Works
-                    </Link>
+                    </a>
                   </li>
                   <li>
-                    <Link to='#contact' className='hover:underline'>
+                    <a href='#contact' className='hover:underline'>
                       Contact Us
-                    </Link>
+                    </a>
                   </li>
                 </>
               )}
@@ -73,14 +73,14 @@ const Home = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to='#how-it-works' className='hover:underline'>
+                  <a href='#how-it-works' className='hover:underline'>
                     How It Works
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link to='#contact' className='hover:underline'>
+                  <a href='#contact' className='hover:underline'>
                     Contact Us
-                  </Link>
+                  </a>
                 </li>
               </>
             )}
@@ -109,13 +109,13 @@ const Home = () => {
           </p>
           <div className='mt-4'>
             <a
-              href='#signup'
+              href='/homepage'
               className='bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600'
             >
               Get Started
             </a>
             <a
-              href='#learn-more'
+              href='#features'
               className='bg-transparent border border-white text-white px-4 py-2 rounded ml-2 hover:bg-white hover:text-black'
             >
               Learn More
@@ -208,13 +208,13 @@ const Home = () => {
           Start Your Occasionton Journey
         </h2>
         <a
-          href='#signup'
+          href='/signup'
           className='bg-green-500 px-6 py-3 rounded hover:bg-green-600'
         >
           Sign Up Now
         </a>
         <a
-          href='#browse-events'
+          href='/homepage'
           className='bg-transparent border border-green-500 text-black px-4 py-2 rounded ml-2 hover:bg-green-500 hover:text-white'
         >
           Browse Events
