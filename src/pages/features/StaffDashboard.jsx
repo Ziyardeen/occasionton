@@ -12,16 +12,6 @@ import {
 const database_id = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 
-//
-// const [message, setMessage] = useState('');
-// const [success, SetSuccess] = useState(false);
-// SetSuccess(true);
-// toast(message);
-// SetSuccess(false);
-// {
-//   !success && <ToastContainer />;
-// }
-
 const StaffDashboard = () => {
   const [events, setEvents] = useState([]);
   const [switchToImageFile, setSwitchToImageFile] = useState(false);

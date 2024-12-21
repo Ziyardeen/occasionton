@@ -116,3 +116,13 @@ Ensure each function runs successfully before proceeding to the next.
     IMPORTANT: After hosting, ensure to change the <baseUrl> value to the base url of the hosted site in <SignUp.jsx> file.
 
     Do not forget about the .env variibles when hosting.
+
+### Providing labels (admin, staff, etc) on Appwrite cloud Console
+
+Only users with a role can access the staff dashboard to add and manage events
+
+1. Log in to Appwrite Console.
+2. Go to the "Auth" section in the sidebar and select Users.
+3. Select the user you want to assign a label to.
+4. In the user details, find the Labels section and click Add Label.
+5. Enter a label name (e.g., "admin, staff etc") and save.

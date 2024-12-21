@@ -13,7 +13,7 @@ const EventRegistration = () => {
   const navigate = useNavigate();
   const [paymentStatus, setPaymentStatus] = useState('not_paid');
   const location = useLocation();
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const event = location.state?.event || {};
 

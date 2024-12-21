@@ -69,7 +69,7 @@ const Home = () => {
               <>
                 <li>
                   <Link to='/homepage' className='hover:underline'>
-                    Features
+                    Application
                   </Link>
                 </li>
                 <li>

@@ -16,7 +16,7 @@ const UserProfile = () => {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
@@ -35,7 +35,7 @@ const UserProfile = () => {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      navigate('/home');
+      navigate('/');
       setSuccess(true);
       setMessage('Logout Successfull !!');
       toast.success('Logout Successfull !!');

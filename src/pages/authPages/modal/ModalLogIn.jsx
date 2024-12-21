@@ -10,9 +10,9 @@ const ModalLogIn = ({ event }) => {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
-  const user = useContext(UserContext);
+  // const user = useContext(UserContext);
   useEffect(() => {
     async () => {
       if (Object.keys(user) > 0) {

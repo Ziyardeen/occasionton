@@ -28,7 +28,7 @@ const Header = () => {
               <>
                 <li>
                   <Link to='/homepage' className='hover:underline'>
-                    Features
+                    Application
                   </Link>
                 </li>
                 <li>
@@ -65,7 +65,7 @@ const Header = () => {
             <>
               <li>
                 <Link to='/homepage' className='hover:underline'>
-                  Features
+                  Application
                 </Link>
               </li>
               <li>
