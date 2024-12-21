@@ -58,9 +58,10 @@ const SignUp = () => {
 
       const register = await registerUser(email, password, name);
       const userLogin = await loginUser(email, password);
+      const baseUrl = 'https://occasionton.netlify.app';
       const callbackUrl = devEnvironment
-        ? 'http://localhost:5173/verify'
-        : 'https://occasionton.netlify.app/verify';
+        ? `${window.location.origin}/verify`
+        : `${baseUrl}/verify`;
       await sendVerificationEmail(callbackUrl);
       await logoutUser();
 

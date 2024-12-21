@@ -12,15 +12,13 @@ const Navbar = () => {
     (async () => {
       try {
         const user = await getCurrentUser();
-        console.log(user);
+
         setUser(user);
       } catch (error) {
-        toast.error('Something went wrong fetching user!!');
+        console.error('Something went wrong fetching user!!');
       }
     })();
   }, []);
-
-  console.log(user, user.labels);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);

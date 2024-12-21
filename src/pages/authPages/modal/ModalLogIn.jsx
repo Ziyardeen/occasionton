@@ -8,8 +8,9 @@ import { UserContext } from '../../../App';
 const ModalLogIn = ({ event }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   const user = useContext(UserContext);
   useEffect(() => {
@@ -20,8 +21,6 @@ const ModalLogIn = ({ event }) => {
     };
   }, []);
 
-  console.log('MODALLLLLLLLLL');
-
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
@@ -29,15 +28,20 @@ const ModalLogIn = ({ event }) => {
     e.preventDefault();
     try {
       const user = await loginUser(email, password);
-      console.log(user);
       setEmail('');
       setPassword('');
-      setMessage('Login successful!');
-      navigate(`/events/${event.$id}/register`, { state: { event: event } });
+      setUser(user);
+      navigate('/events');
     } catch (error) {
-      console.log(error);
-      setMessage('Login Failed: Invalid Email or Password!');
-      toast.error(message);
+      if (error.code === 400) {
+        toast.error('Invalid Email or Password!');
+      } else if (error.code === 401) {
+        toast.error(
+          'Unauthorized access! Please check your credentials or Sign Up.'
+        );
+      } else {
+        toast.error('Login failed. Please try again.');
+      }
     }
   };
 

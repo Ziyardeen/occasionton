@@ -149,7 +149,7 @@ const EventsList = () => {
                   className='mt-4 text-primary underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary'
                   aria-label={`View Details for ${event.title}`}
                   onClick={() =>
-                    navigate(`/events/${event.$id}`, {
+                    navigate(`/events/eventDetail`, {
                       state: { event: event },
                     })
                   }

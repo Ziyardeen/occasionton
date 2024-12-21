@@ -18,28 +18,19 @@ const EventDetail = () => {
   const { event_id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoggeIn, setISLoggedIn] = useState(true);
-  const user = useContext(UserContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { user } = useContext(UserContext);
+
   const [modalShow, setModalShow] = useState(false);
   const { event } = location.state || {};
-  const [message, setMessage] = useState('');
-
-  console.log(user, Object.keys(user));
-
-  useEffect(() => {}, [event_id]);
 
   const handleSignUp = () => {
-    if (Object.keys(user).length === 0) {
-      setISLoggedIn(false);
-      setModalShow(true);
+    console.log(user, '<<<<');
+    if (!user || Object.keys(user).length === 0) {
+      setModalShow(true); // Show modal if user is not logged in
       return;
     }
-    setISLoggedIn(true);
-    setModalShow(false);
-
-    navigate(`/events/${event_id}/register`, {
-      state: { event: event },
-    });
+    navigate(`/events/register`, { state: { event } });
   };
 
   if (!event) return <NotFoundPage />;
@@ -69,7 +60,7 @@ const EventDetail = () => {
             <strong>Host:</strong> {event.host}
           </p>
 
-          {!isLoggeIn && (
+          {!isLoggedIn && (
             <p className='text-red-600 mb-4'>
               <strong>Please Log In To signUp For An event</strong>
             </p>
@@ -87,23 +78,34 @@ const EventDetail = () => {
         </div>
       </main>
 
-      <ReactModal
-        isOpen={modalShow}
-        onRequestClose={() => setModalShow(false)}
-        style={{
-          overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-          },
-          content: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignSelf: 'center',
-            border: 'none',
-          },
-        }}
-      >
-        <ModalLogIn event={event} />
-      </ReactModal>
+      {!user ||
+        (Object.keys(user).length === 0 && modalShow && (
+          <ReactModal
+            isOpen={modalShow}
+            onRequestClose={() => setModalShow(false)}
+            style={{
+              overlay: {
+                backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 1000,
+              },
+              content: {
+                inset: 'auto',
+                width: '90%',
+                maxWidth: '500px',
+                margin: '0 auto',
+                padding: '20px',
+                borderRadius: '10px',
+                background: '#fff',
+                zIndex: 1100,
+              },
+            }}
+          >
+            <ModalLogIn event={event} />
+          </ReactModal>
+        ))}
     </div>
   );
 };

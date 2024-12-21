@@ -15,7 +15,7 @@ export const registerUser = async (email, password, name) => {
     const user = await account.create(ID.unique(), email, password, name);
     return user;
   } catch (error) {
-    throw new Error(`Registration Error: ${error.message}`);
+    throw error;
   }
 };
 
@@ -45,7 +45,7 @@ export const loginUser = async (email, password) => {
     const session = await account.createEmailPasswordSession(email, password);
     return session;
   } catch (error) {
-    throw new Error(`Login Error: ${error.message}`);
+    throw error;
   }
 };
 

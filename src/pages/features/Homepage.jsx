@@ -10,7 +10,7 @@ const collection_id = import.meta.env.VITE_APPWRITE_EVENTS_COLLECTION_ID;
 const Homepage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+
   const [success, SetSuccess] = useState(false);
   const navigate = useNavigate();
 
@@ -65,7 +65,7 @@ const Homepage = () => {
                       <p className='text-gray-600 mb-4'>{event.description}</p>
                       <button
                         onClick={() =>
-                          navigate(`/events/${event.$id}`, {
+                          navigate(`/events/eventDetail`, {
                             state: { event: event },
                           })
                         }

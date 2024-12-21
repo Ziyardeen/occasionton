@@ -29,13 +29,13 @@ function App() {
         const currentUser = await getCurrentUser();
         setUser(currentUser);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     })();
   }, []);
   return (
     <>
-      <UserContext.Provider value={user}>
+      <UserContext.Provider value={{ user, setUser }}>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/signin' element={<LogIn />} />
@@ -45,12 +45,12 @@ function App() {
 
           <Route path='/homepage' element={<Homepage />} />
           <Route path='/events' element={<EventsList />} />
-          <Route path='/events/:event_id' element={<EventDetail />} />
+          <Route path='/events/eventDetail' element={<EventDetail />} />
           <Route path='/staff-dashboard' element={<StaffDashboard />} />
           <Route path='/profile' element={<UserProfile />} />
 
           <Route
-            path='/events/:eventId/register'
+            path='/events/register'
             element={
               <ProtectedRoute>
                 {' '}
