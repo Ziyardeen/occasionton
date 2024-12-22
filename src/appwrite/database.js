@@ -23,10 +23,9 @@ export const createDocument = async (data) => {
       ID.unique(),
       data
     );
-    console.log('Document created:', response);
+
     return response;
   } catch (error) {
-    console.error('Create document error:', error);
     throw error;
   }
 };
@@ -39,10 +38,9 @@ export const getDocument = async (database_id, collection_id, document_id) => {
       collection_id,
       document_id
     );
-    console.log('Document retrieved:', response);
+
     return response;
   } catch (error) {
-    console.error('Get document error:', error);
     throw error;
   }
 };
@@ -54,7 +52,6 @@ export const listDocuments = async () => {
 
     return response;
   } catch (error) {
-    console.error('List documents error:', error);
     throw error;
   }
 };
@@ -73,10 +70,9 @@ export const updateDocument = async (
       document_id,
       data
     );
-    console.log('Document updated:', response);
+
     return response;
   } catch (error) {
-    console.error('Update document error:', error);
     throw error;
   }
 };
@@ -89,14 +85,10 @@ export const deleteDocument = async (
 ) => {
   try {
     await databases.deleteDocument(database_id, collection_id, document_id);
-    console.log('Document deleted');
   } catch (error) {
-    console.error('Delete document error:', error);
     throw error;
   }
 };
-
-// Custom Functions
 
 // Adding to attendance
 export async function addAttendee(
@@ -117,7 +109,7 @@ export async function addAttendee(
     );
     return update;
   } catch (error) {
-    console.error('Update of Attendees Error:', error);
+    throw error;
   }
 }
 
@@ -140,7 +132,7 @@ export async function deleteAttendees(
     );
     return update;
   } catch (error) {
-    console.error('Deletion of Attendees Error:', error);
+    throw error;
   }
 }
 
@@ -153,10 +145,9 @@ export const uploadImage = async (ImageFile) => {
       ImageFile
     );
     const image = storage.getFileView(events_bucket_id, upload.$id);
-    console.log('Image Uploaded successfully');
+
     return image;
   } catch (error) {
-    console.error('Error Uploading Image:', error);
     throw error;
   }
 };

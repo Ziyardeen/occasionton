@@ -25,7 +25,6 @@ const EventDetail = () => {
   const { event } = location.state || {};
 
   const handleSignUp = () => {
-    console.log(user, '<<<<');
     if (!user || Object.keys(user).length === 0) {
       setModalShow(true); // Show modal if user is not logged in
       return;

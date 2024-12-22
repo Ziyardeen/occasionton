@@ -49,7 +49,6 @@ const EventsList = () => {
         setLoading(false);
       } catch (error) {
         toast.error('Something went wrong getting categories !!');
-        console.log(error);
       }
     })();
   }, []);

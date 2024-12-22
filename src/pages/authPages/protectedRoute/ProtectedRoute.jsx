@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
     const checkUser = async () => {
       try {
         const user = await getCurrentUser();
-        console.log(user);
+
         setAuthenticated(true);
       } catch (error) {
         setAuthenticated(false);
