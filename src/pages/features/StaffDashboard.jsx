@@ -135,6 +135,17 @@ const StaffDashboard = () => {
               isFeatured: newEvent.isFeatured,
             }
           );
+          //////////
+          // setEvents((prevEvents) => [...prevEvents, updatedDocument]);
+          setEvents((prevEvents) => {
+            return [
+              ...prevEvents.filter(
+                (event) => event.$id !== updatedDocument.$id
+              ),
+              updatedDocument,
+            ];
+          });
+          ////////////
 
           ////set Editing to False
           setEditing(false);
@@ -159,6 +170,12 @@ const StaffDashboard = () => {
           return;
         }
         const event = await createDocument({ ...newEvent, image: result });
+
+        //////////////
+        setEvents((prevEvents) => [...prevEvents, event]);
+
+        //////////////
+
         setNewEvent({
           title: '',
           description: '',
@@ -199,6 +216,17 @@ const StaffDashboard = () => {
               isFeatured: Boolean(newEvent.isFeatured),
             }
           );
+          ////////////
+          // setEvents((prevEvents) => [...prevEvents, updatedDocument]);
+          setEvents((prevEvents) => {
+            return [
+              ...prevEvents.filter(
+                (event) => event.$id !== updatedDocument.$id
+              ),
+              updatedDocument,
+            ];
+          });
+          ///////////
 
           setEditing(false);
           setNewEvent({
@@ -222,6 +250,10 @@ const StaffDashboard = () => {
           return;
         }
         const event = await createDocument(newEvent);
+        /////////
+        setEvents((prevEvents) => [...prevEvents, event]);
+        ///////
+
         setNewEvent({
           title: '',
           description: '',
