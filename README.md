@@ -30,8 +30,8 @@ This project is an event management platform that allows users to browse and boo
 Clone these two reposotories and cd into each of them;
 run npm install.
 
-1. Git clone the frontend repo : <repository_url>
-2. Git clone the backend repo : <repository_url>
+1. Git clone the frontend repo : <https://github.com/Ziyardeen/occasionton.git>
+2. Git clone the appwrite server repo : <https://github.com/Ziyardeen/Occasionton-Server-side.git>
 
 ### Setting up Appwrite cloud Server
 
