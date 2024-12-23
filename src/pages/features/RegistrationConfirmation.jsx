@@ -65,13 +65,25 @@ const RegistrationConfirmation = () => {
           We look forward to seeing you on{' '}
           {new Date(event.date).toLocaleDateString()} at {event.location}.
         </p>
-        <button
-          className='bg-primary text-white py-2 px-6 mt-4 md:mt-0 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-primary hover:bg-primary-dark'
-          aria-label={`Add ${event.title} to calendar`}
-          onClick={() => addToGoogleCalender(event)}
+        <div
+          id='buttons-container'
+          className='flex flex-col md:flex-row gap-4 justify-center mt-6'
         >
-          Add to Calendar
-        </button>
+          <button
+            className='bg-primary text-white py-2 px-6 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-primary hover:bg-primary-dark'
+            aria-label={`Add ${event.title} to calendar`}
+            onClick={() => addToGoogleCalender(event)}
+          >
+            Add to Calendar
+          </button>
+          <button
+            className='bg-gray-200 text-gray-700 py-2 px-6 rounded w-full md:w-auto text-lg focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 hover:bg-gray-300'
+            aria-label='Go to Home Page'
+            onClick={() => navigate('/homepage')}
+          >
+            Home
+          </button>
+        </div>
       </div>
     </main>
   );

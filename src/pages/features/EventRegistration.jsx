@@ -44,7 +44,7 @@ const EventRegistration = () => {
           user.$id
         );
         toast.success('Registration confirmed!');
-        navigate(`/events/${event.$id}/confirmation`, {
+        navigate(`/events/confirmation`, {
           state: { event: event },
         });
       } catch (error) {

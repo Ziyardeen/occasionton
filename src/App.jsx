@@ -59,7 +59,7 @@ function App() {
             }
           />
           <Route
-            path='/events/:eventId/confirmation'
+            path='/events/confirmation'
             element={
               <ProtectedRoute>
                 {' '}
